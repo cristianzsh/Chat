@@ -23,6 +23,7 @@ import javax.swing.FocusManager;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -71,7 +72,7 @@ public class ServidorChat extends JFrame {
 		}
 	}
 
-	public void construirGUI() {
+	private void construirGUI() {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Exception ex) {  }
@@ -132,7 +133,7 @@ public class ServidorChat extends JFrame {
 		this.setVisible(true);
 	}
 
-	public void distribuir(String men) {
+	private void distribuir(String men) {
 		Iterator it = outputStreamsDoCliente.iterator();
 		while (it.hasNext()) {
 			try {
@@ -159,12 +160,17 @@ public class ServidorChat extends JFrame {
 					mensagens.append("Nova conexão\n");
 				}
 
-			} catch (Exception ex) { ex.printStackTrace(); }
+			} catch (Exception ex) {
+				JOptionPane.showMessageDialog(null, "Erro ao criar nova conexão");
+			}
 		}
 	}
 
 	class CriarServidorListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
+			if (porta.getText().equals("")) {
+				return;
+			}
 			porta.setEnabled(false);
 			criarServidor.setEnabled(false);
 			Thread t = new Thread(new Servidor());

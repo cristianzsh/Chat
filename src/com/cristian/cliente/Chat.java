@@ -23,6 +23,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
@@ -138,14 +139,20 @@ public class Chat extends JFrame {
 
 			Thread t = new Thread(new LeitorDeEntrada());
 			t.start();
-		} catch (IOException ex) {  }
+
+			usuario.setEnabled(false);
+			porta.setEnabled(false);
+			conectar.setEnabled(false);
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, "Erro ao configurar a conexão");
+		}
 	}
 
 	class ConectarListener implements ActionListener {
 		public void actionPerformed(ActionEvent ev) {
-			usuario.setEnabled(false);
-			porta.setEnabled(false);
-			conectar.setEnabled(false);
+			if (usuario.getText().equals("") || porta.getText().equals("")) {
+				return;
+			}
 
 			configurarConexao();
 		}
